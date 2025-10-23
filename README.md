@@ -54,12 +54,27 @@ Requires Docker and Docker Compose.
 
 - Start services
   - `make up`
-- Open client in browser
+- Open client in browser (default)
   - http://localhost:3000
-- API base URL
+- API base URL (default)
   - http://localhost:8080/api
 - Stop services
   - `make down`
+
+### Ports (override to avoid collisions)
+
+- Server port: set `SERVER_PORT`
+- Client port: set `CLIENT_PORT`
+
+Examples:
+
+```sh
+# Run on custom ports 8081 (API) and 3001 (client)
+SERVER_PORT=8081 CLIENT_PORT=3001 make up
+
+# Run functional tests against those ports (auto-derived)
+SERVER_PORT=8081 CLIENT_PORT=3001 make functional-test
+```
 
 ## Dev without Docker
 

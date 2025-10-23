@@ -9,8 +9,8 @@ if [ ! -d node_modules ]; then
 fi
 npx playwright install
 
-# Default base URLs if not provided
-export API_BASE_URL="${API_BASE_URL:-http://localhost:8080/api}"
-export CLIENT_BASE_URL="${CLIENT_BASE_URL:-http://localhost:3000}"
+# Default base URLs if not provided; allow deriving from SERVER_PORT/CLIENT_PORT
+export API_BASE_URL="${API_BASE_URL:-http://localhost:${SERVER_PORT:-8080}/api}"
+export CLIENT_BASE_URL="${CLIENT_BASE_URL:-http://localhost:${CLIENT_PORT:-3000}}"
 
 npx playwright test --reporter=line "$@"
