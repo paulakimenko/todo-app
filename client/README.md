@@ -4,36 +4,37 @@ This is the client-side code for the Todo App. It is a React application that al
 
 ## Features
 
-<ol>
-    <li>User registration and login.</li>
-    <li>todos CRUD.</li>
-    <li>Mark todos as completed.</li>
-    <li>Responsive design for mobile and desktop.</li>
-</ol>
+# Todo App - Client
 
-## Technologies
+React app for the Todo project. Uses Redux Toolkit for auth state, React Router for navigation, and styled-components/Bootstrap for styling. API access is centralized in `src/Services/api.js`.
 
-<ol>
-    <li>React</li>
-    <li>Redux</li>
-    <li>React Router</li>
-    <li>Axios for API requests</li>
-    <li>Bootstrap</li>
-    <li>React Hook</li>
-    <li>React Icons</li>
-    <li>Styled Components</li>
-    <li>ESLint</li>
-</ol>
+## Run
 
-## Folder Structure
+- Install and start:
+    - `npm install`
+    - `npm start` (CRA dev server on http://localhost:3000)
 
-The client code is organized into the following directories:
+## Configuration
 
-<ol>
-    <li><strong>src/Components: </strong>Contains reusable components used throughout the application Like Todo Component, Avatar Component etc.</li>
-    <li><strong>src/Pages: </strong>Contains the pages of the application. Each page is a React route.</li>
-    <li><strong>src/Services: </strong>Contains Axios request functions to make api call to the server</li>
-    <li><strong>src/Store: </strong>Contains the Redux store configuration and actions for managing state.</li>
-    <li><strong>src/App.js: </strong>The root component of the application.</li>
-    <li><strong>src/index.js: </strong>Entry point of the application.</li>
-</ol>
+- `REACT_APP_API_BASE_URL` — API base URL used by Axios helpers
+    - Default: `https://todo-app-server-eosin.vercel.app/api`
+    - Local example: `http://localhost:8080/api`
+
+## Auth
+
+- Login and Register call the server API. On success, Redux stores `user`, `token`, `userId`, and `picture`.
+- Protected route: `Dashboard` redirects unauthenticated users to `/login`.
+- All `/api/todos` calls send `x-access-token` and include `userId` (for list and bulk-delete).
+
+## Tests
+
+- Unit tests (React Testing Library): `npm test`
+- In CI/local via Make: `make unit-test` (runs server tests too)
+
+## Structure
+
+- `src/Pages` — `Login`, `Register`, `Dashboard`
+- `src/components/Todo` — `TodoList`, `TodoListItem`, `TodoForm`
+- `src/components/User` — `Avatar`
+- `src/Services/api.js` — Axios helpers with auth/header handling
+- `src/Store` — Redux slice (`userSlice.js`) and store
