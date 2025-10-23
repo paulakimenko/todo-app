@@ -3,6 +3,52 @@ import axios from 'axios';
 // Prefer environment override for local/dev; fall back to deployed API
 const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL || 'https://todo-app-server-eosin.vercel.app/api';
+
+// Install lightweight request/response logging (once per runtime)
+(() => {
+  try {
+    const flag = '__API_LOGGER_INSTALLED__';
+    const g = typeof globalThis !== 'undefined' ? globalThis : window;
+    if (!g[flag]) {
+      axios.interceptors.request.use((config) => {
+        const { method, url } = config;
+        // mark start time for duration measurement
+        config.meta = { start: Date.now() };
+        // Avoid logging bodies (may contain credentials)
+        // eslint-disable-next-line no-console
+        console.log(`[WEB][req] ${String(method || 'GET').toUpperCase()} ${url}`);
+        return config;
+      });
+
+      axios.interceptors.response.use(
+        (response) => {
+          const { config, status } = response;
+          const dur = config?.meta?.start ? Date.now() - config.meta.start : undefined;
+          // eslint-disable-next-line no-console
+          console.log(
+            `[WEB][res] ${status} ${String(config?.method || 'GET').toUpperCase()} ${config?.url}` +
+              (dur != null ? ` ${dur}ms` : ''),
+          );
+          return response;
+        },
+        (error) => {
+          const cfg = error?.config || {};
+          const dur = cfg?.meta?.start ? Date.now() - cfg.meta.start : undefined;
+          const status = error?.response?.status;
+          // eslint-disable-next-line no-console
+          console.log(
+            `[WEB][res] ${status ?? 'ERR'} ${String(cfg.method || 'GET').toUpperCase()} ${cfg.url}` +
+              (dur != null ? ` ${dur}ms` : ''),
+          );
+          return Promise.reject(error);
+        },
+      );
+      g[flag] = true;
+    }
+  } catch (e) {
+    // ignore logging setup errors
+  }
+})();
 // api request to register a new user
 export const registerUser = async (userData) => {
   try {

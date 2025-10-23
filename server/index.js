@@ -4,6 +4,7 @@ const bodyParser = require('body-parser'); // import body-parser for parsing req
 const mongoose = require('mongoose'); // import mongoose for interacting with MongoDB
 const todoRoutes = require('./routes/todoRoutes'); // import todo routes
 const userRoutes = require('./routes/userRoutes'); // import user routes
+const apiLogger = require('./middleware/logger'); // basic console logger
 
 const app = express(); // create express app
 const port = process.env.PORT || 8080; // port to listen on (configurable via PORT)
@@ -11,6 +12,7 @@ const port = process.env.PORT || 8080; // port to listen on (configurable via PO
 app.use(cors()); // use cors
 app.use(express.json()); // use express.json to parse json bodies
 app.use(bodyParser.json()); // use body-parser to parse json bodies
+app.use(apiLogger); // log all API requests/responses
 
 // Simple health check endpoint
 app.get('/healthz', (req, res) => {

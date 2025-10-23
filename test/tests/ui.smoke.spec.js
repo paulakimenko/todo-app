@@ -36,6 +36,19 @@ function attachBrowserTrackers(page) {
   return { assertNoBrowserErrors };
 }
 
+async function dismissDevOverlay(page) {
+  try {
+    await page.evaluate(() => {
+      const el = document.getElementById('webpack-dev-server-client-overlay');
+      if (el && el.parentElement) {
+        el.parentElement.removeChild(el);
+      }
+    });
+  } catch (e) {
+    // ignore
+  }
+}
+
 function uniqueEmail() {
   return `ui_${Date.now()}_${Math.floor(Math.random() * 10000)}@example.com`;
 }
@@ -54,6 +67,7 @@ async function registerViaApi(request, { email, password }) {
 test('ui smoke: unauthenticated users are redirected to /login', async ({ page }) => {
   const { assertNoBrowserErrors } = attachBrowserTrackers(page);
   await page.goto(`${CLIENT_BASE}/`);
+  await dismissDevOverlay(page);
   await expect(page).toHaveURL(/\/login$/);
   await expect(page.getByRole('heading', { name: 'Sign In' })).toBeVisible();
   await assertNoBrowserErrors();
@@ -69,8 +83,11 @@ test('ui smoke: login, add todo, logout', async ({ page, request }) => {
 
   // Go to login page and sign in
   await page.goto(`${CLIENT_BASE}/login`);
+  await dismissDevOverlay(page);
   await page.fill('#inputEmail3', email);
   await page.fill('#inputPassword3', password);
+  // Dismiss any dev overlay that might intercept pointer events
+  await dismissDevOverlay(page);
   await page.getByRole('button', { name: 'Sign in' }).click();
 
   // Expect dashboard
@@ -79,6 +96,7 @@ test('ui smoke: login, add todo, logout', async ({ page, request }) => {
   await expect(page.getByRole('button', { name: 'Logout' })).toBeVisible();
 
   // Expand form and add a todo
+  await dismissDevOverlay(page);
   await page.locator('button:has(svg.bi-chevron-compact-down)').click();
   await page.fill('#item', 'UI Smoke Task');
   await page.getByRole('button', { name: 'Add' }).click();
