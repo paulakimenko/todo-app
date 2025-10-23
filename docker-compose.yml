@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:6
+    container_name: todo-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  server:
+    build: ./server
+    container_name: todo-server
+    environment:
+      - MONGO_DB_URL=mongodb://mongo:27017/todo-app
+      - TOKEN_KEY=devsecret
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    command: npm run dev
+
+  client:
+    build: ./client
+    container_name: todo-client
+    ports:
+      - "3000:3000"
+    environment:
+      # Helps CRA detect file changes on mounted volumes (Mac/WSL)
+      - CHOKIDAR_USEPOLLING=true
+      - HOST=0.0.0.0
+      # Optional: if you later read this in code, set local API base url
+      # - REACT_APP_API_BASE_URL=http://localhost:8080/api
+    depends_on:
+      - server
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+
+volumes:
+  mongo-data:
