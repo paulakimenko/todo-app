@@ -2,9 +2,6 @@
 This is a Todo List application built with a MERN stack (MongoDB, Express.js, React, Node.js).
 The app allows users to create, manage, and organize their todo tasks.
 
-## Link
-[Link to deployed app](https://todo-app-client-khaki.vercel.app/)
-
 ## Tech Stack
 M - MongoDB </br>
 E - Express </br>
@@ -43,11 +40,6 @@ MongoDB Atlas account (for database)
 [![CI](https://github.com/paulakimenko/todo-app/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/paulakimenko/todo-app/actions/workflows/ci.yml)
 
 Full-stack Todo application with React client, Express/Mongo API, and JWT auth. Includes unit tests and Playwright API/UI smoke tests. Docker Compose for local dev and a Makefile/scripts for common tasks.
-
-## Link
-
-- Deployed client: https://todo-app-client-khaki.vercel.app/
-- Deployed API (fallback in client): https://todo-app-server-eosin.vercel.app/api
 
 ## Stack
 
