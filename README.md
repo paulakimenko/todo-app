@@ -80,6 +80,7 @@ Server
 
 ## API overview
 
+- GET `/healthz` (no auth)
 - POST `/api/users/register`
 - POST `/api/users/login`
 - GET `/api/todos?userId=...` (auth required)

@@ -21,6 +21,7 @@ Express API with MongoDB and JWT auth. Used by the React client.
 
 ## Endpoints
 
+- `GET /healthz` — service health (no auth)
 - `POST /api/users/register`
 - `POST /api/users/login`
 - `GET /api/todos?userId=...` (auth)

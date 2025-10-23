@@ -12,6 +12,18 @@ app.use(cors()); // use cors
 app.use(express.json()); // use express.json to parse json bodies
 app.use(bodyParser.json()); // use body-parser to parse json bodies
 
+// Simple health check endpoint
+app.get('/healthz', (req, res) => {
+  const state = mongoose.connection.readyState; // 0=disconnected,1=connected,2=connecting,3=disconnecting
+  const states = ['disconnected', 'connected', 'connecting', 'disconnecting'];
+  res.status(200).json({
+    status: 'ok',
+    uptime: process.uptime(),
+    db: states[state] || String(state),
+    timestamp: new Date().toISOString(),
+  });
+});
+
 // Connect to MongoDB
 mongoose
   .connect(`${process.env.MONGO_DB_URL}`, {
