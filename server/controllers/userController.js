@@ -1,7 +1,7 @@
-const User = require("../models/User"); // Import User Model Schema
-const bcrypt = require("bcryptjs"); // Import Bcrypt Package
-const jwt = require("jsonwebtoken"); // Import Jsonwebtoken Package
-require("dotenv").config(); // Import dotenv Package
+const User = require('../models/User'); // Import User Model Schema
+const bcrypt = require('bcryptjs'); // Import Bcrypt Package
+const jwt = require('jsonwebtoken'); // Import Jsonwebtoken Package
+require('dotenv').config(); // Import dotenv Package
 
 // Register User
 exports.register = async (req, res) => {
@@ -11,7 +11,7 @@ exports.register = async (req, res) => {
 
     // Validate user input
     if (!(email && password && first_name && last_name)) {
-      return res.status(400).send("All input is required");
+      return res.status(400).send('All input is required');
     }
 
     // check if user already exists
@@ -19,7 +19,7 @@ exports.register = async (req, res) => {
     const oldUser = await User.findOne({ email }); // Find user with requested email
 
     if (oldUser) {
-      return res.status(409).send("User Already Exist. Please Login");
+      return res.status(409).send('User Already Exist. Please Login');
     }
 
     // Encrypt user password
@@ -31,26 +31,21 @@ exports.register = async (req, res) => {
       last_name,
       email: email.toLowerCase(), // sanitize: convert email to lowercase
       password: encryptedPassword,
-      picture: picture
+      picture: picture,
     });
 
     // Create token
-    const token = jwt.sign(
-      { user_id: user._id, email },
-      process.env.TOKEN_KEY,
-      {
-        expiresIn: "2h",
-      }
-    );
-    
+    const token = jwt.sign({ user_id: user._id, email }, process.env.TOKEN_KEY, {
+      expiresIn: '2h',
+    });
+
     // Return new user and token
     res.status(201).json({ user, token });
   } catch (err) {
     console.log(err);
-    res.status(500).send("Server error");
+    res.status(500).send('Server error');
   }
 };
-
 
 // Login User
 exports.login = async (req, res) => {
@@ -60,21 +55,17 @@ exports.login = async (req, res) => {
 
     // Validate user input
     if (!(email && password)) {
-      return res.status(400).send("All input is required");
+      return res.status(400).send('All input is required');
     }
-    
+
     // Validate if user exists in our database
     const user = await User.findOne({ email });
 
     if (user && (await bcrypt.compare(password, user.password))) {
       // Create token
-      const token = jwt.sign(
-        { user_id: user._id, email },
-        process.env.TOKEN_KEY,
-        {
-          expiresIn: "2h",
-        }
-      );
+      const token = jwt.sign({ user_id: user._id, email }, process.env.TOKEN_KEY, {
+        expiresIn: '2h',
+      });
 
       // Save user token
       user.token = token;
@@ -84,9 +75,8 @@ exports.login = async (req, res) => {
     }
 
     // Invalid credentials
-    return res.status(400).send("Invalid Credentials");
+    return res.status(400).send('Invalid Credentials');
   } catch (err) {
     console.log(err);
   }
-}
-
+};

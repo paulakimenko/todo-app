@@ -27,7 +27,7 @@ exports.createTodo = async (req, res) => {
     await todo.save(); // Save todo
     res.status(201).json(todo); // Send todo as json
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({ error: 'Server error' + error });
   }
 };
@@ -41,7 +41,7 @@ exports.updateTodo = async (req, res) => {
     const todo = await Todo.findByIdAndUpdate(
       id, // Find todo by id
       { task, completed, completed_time }, // Update task, completed, completed_time
-      { new: true } // Return updated todo
+      { new: true }, // Return updated todo
     );
     // console.log(todo)
     res.json(todo);
@@ -54,7 +54,7 @@ exports.updateTodo = async (req, res) => {
 exports.deleteTodo = async (req, res) => {
   try {
     const { id } = req.params; // Get id from params
-    await Todo.findOneAndDelete({ _id: id}); // Find todo by id and delete
+    await Todo.findOneAndDelete({ _id: id }); // Find todo by id and delete
     res.json({ message: 'Todo deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
@@ -63,11 +63,11 @@ exports.deleteTodo = async (req, res) => {
 
 // Delete all todos
 exports.deleteAllTodos = async (req, res) => {
-    try {
-        const { userId } = req.query; // Get userId from query
-        await Todo.deleteMany({ userId }); // Find all todos with userId and delete
-        res.json({ message: 'All todos deleted successfully', status: 200 });
-    } catch (error) {
-        res.status(500).json({ message: 'Server error', status: 500 });
-    }
+  try {
+    const { userId } = req.query; // Get userId from query
+    await Todo.deleteMany({ userId }); // Find all todos with userId and delete
+    res.json({ message: 'All todos deleted successfully', status: 200 });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', status: 500 });
+  }
 };

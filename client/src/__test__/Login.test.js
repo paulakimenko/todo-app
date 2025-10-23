@@ -30,7 +30,7 @@ describe('Login component', () => {
     render(
       <MemoryRouter>
         <Login />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
@@ -42,7 +42,7 @@ describe('Login component', () => {
     render(
       <MemoryRouter>
         <Login />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     const emailInput = screen.getByLabelText(/email/i);

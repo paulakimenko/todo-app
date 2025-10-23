@@ -9,6 +9,7 @@ MVC (Model View Controller) Architecture </br>
 The architecture followed is an mvc architecture where models and controllers are in server whereas view are in our client app.
 
 ## API Endpoints
+
 The server provides the following API endpoints:
 
 <ul>

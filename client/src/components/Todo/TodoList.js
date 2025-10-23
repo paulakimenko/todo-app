@@ -1,16 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import TodoListItem from "./TodoListItem";
-import TodoForm from "./TodoForm";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import TodoListItem from './TodoListItem';
+import TodoForm from './TodoForm';
+import styled from 'styled-components';
 
-import {
-  getTodos,
-  createTodo,
-  updateTodo,
-  deleteTodo,
-  deleteAllTodos
-} from "../../Services/api";
+import { getTodos, createTodo, updateTodo, deleteTodo, deleteAllTodos } from '../../Services/api';
 
 const TodoList = () => {
   const [items, setItems] = useState([]); // State to hold the list of todo items
@@ -20,17 +14,19 @@ const TodoList = () => {
   const userId = useSelector((state) => state.user.userId); // get user id from redux store
 
   useEffect(() => {
-    // Call the getItems function from the API module to get the list of items from the database against user
-    getItems().then((data) => {
-      setItems(data);
-      // console.log("data:" ,data)
-    });
-  }, [userId, token]); // Call it only when userId changes
-
-  // Function to get the list of items from the database
-  const getItems = async () => {
-    return await getTodos(token, userId);
-  };
+    // Fetch todos for the current user
+    const fetchItems = async () => {
+      try {
+        const data = await getTodos(token, userId);
+        setItems(data);
+      } catch (err) {
+        console.log('Error fetching todos', err);
+      }
+    };
+    if (userId && token) {
+      fetchItems();
+    }
+  }, [userId, token]);
 
   const addItem = async (item) => {
     // Save the new item
@@ -45,12 +41,12 @@ const TodoList = () => {
       if (response.task === item.task) {
         const newItem = item; // Newly inserted todo item
         setItems((prevItems) => [...prevItems, newItem]);
-        console.log("Item added successfully");
+        console.log('Item added successfully');
       } else {
-        console.log("Error adding item");
+        console.log('Error adding item');
       }
     } catch (error) {
-      console.log("Error adding item", error);
+      console.log('Error adding item', error);
     }
   };
 
@@ -66,12 +62,12 @@ const TodoList = () => {
     // Delete all items in the list
     const response = await deleteAllTodos(token, userId);
     if (response.status === 200) {
-      console.log("Items deleted successfully");
+      console.log('Items deleted successfully');
       setItems([]); // Set the items array to empty
     } else {
-      console.log("Error deleting items");
-      var error = document.getElementById("error-msg");
-      error.innerHTML = "Error deleting items";
+      console.log('Error deleting items');
+      var error = document.getElementById('error-msg');
+      error.innerHTML = 'Error deleting items';
     }
   };
 
@@ -82,7 +78,7 @@ const TodoList = () => {
     todo.task = editedMessage; // Update the task property
     var response = await updateTodo(todo, token); // Call the updateTodo function from the API module to update the todo item
     if (response.task === todo.task) {
-      console.log("Item updated successfully");
+      console.log('Item updated successfully');
       // Update the items state array
       setItems((prevItems) => {
         const updatedItems = [...prevItems];
@@ -90,9 +86,9 @@ const TodoList = () => {
         return updatedItems;
       });
     } else {
-      console.log("Error updating item");
-      var error = document.getElementById("error-msg");
-      error.innerHTML = "Error updating item";
+      console.log('Error updating item');
+      var error = document.getElementById('error-msg');
+      error.innerHTML = 'Error updating item';
     }
     // console.log(items);
   };
@@ -107,16 +103,16 @@ const TodoList = () => {
     var response = await updateTodo(todo, token);
     // console.log(response)
     if (response.task === todo.task) {
-      console.log("Item updated successfully");
+      console.log('Item updated successfully');
       setItems((prevItems) => {
         const updatedItems = [...prevItems];
         updatedItems[index].completed = checked;
         return updatedItems;
       });
     } else {
-      console.log("Error updating item");
-      var error = document.getElementById("error-msg");
-      error.innerHTML = "Error updating item";
+      console.log('Error updating item');
+      var error = document.getElementById('error-msg');
+      error.innerHTML = 'Error updating item';
     }
     // console.log(items);
   };
@@ -148,18 +144,17 @@ const TodoList = () => {
                   />
                 </svg>
                 {showDeleteAll && (
-                  <div className="menu" style={{'position':'absolute'}} >
-                    <span className="btn btn-sm btn-danger" onClick={handleDeleteAll}>Delete All</span>
+                  <div className="menu" style={{ position: 'absolute' }}>
+                    <span className="btn btn-sm btn-danger" onClick={handleDeleteAll}>
+                      Delete All
+                    </span>
                   </div>
                 )}
               </p>
               <p className="mb-0">To do today</p>
             </div>
             <div>
-              <button
-                className="btn btn-sm btn-transparent"
-                onClick={toggleForm}
-              >
+              <button className="btn btn-sm btn-transparent" onClick={toggleForm}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -176,13 +171,9 @@ const TodoList = () => {
               </button>
             </div>
           </Head>
-          <ErrorMessage
-            id="error-msg"
-            className="text-sm text-warning"
-          ></ErrorMessage>
+          <ErrorMessage id="error-msg" className="text-sm text-warning"></ErrorMessage>
           {/* sending addItem function as callback */}
-          {showForm && <TodoForm getItem={addItem} />}{" "}
-          {/* Show TodoForm when showForm is true */}
+          {showForm && <TodoForm getItem={addItem} />} {/* Show TodoForm when showForm is true */}
         </GlassMorphism>
         <ListItemWrapper className="my-3 text-dark">
           {items.map((item, index) => (

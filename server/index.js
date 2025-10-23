@@ -12,15 +12,15 @@ app.use(cors()); // use cors
 app.use(express.json()); // use express.json to parse json bodies
 app.use(bodyParser.json()); // use body-parser to parse json bodies
 
-
 // Connect to MongoDB
-mongoose.connect(`${process.env.MONGO_DB_URL}`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  writeConcern: {
-    w: 'majority',
-  }
-})
+mongoose
+  .connect(`${process.env.MONGO_DB_URL}`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    writeConcern: {
+      w: 'majority',
+    },
+  })
   .then(() => {
     console.log('Connected to MongoDB');
   })

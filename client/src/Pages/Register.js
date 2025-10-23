@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import Avatar from "../components/User/Avatar";
-import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { setUser, setUserId, setToken, setPicture } from "../Store/userSlice";
-import { registerUser } from "../Services/api";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import Avatar from '../components/User/Avatar';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUser, setUserId, setToken, setPicture } from '../Store/userSlice';
+import { registerUser } from '../Services/api';
 
 const Register = () => {
-  const [email, setEmail] = useState(""); // State to hold the email address
-  const [password, setPassword] = useState(""); // State to hold the password
-  const [firstname, setFirstname] = useState("") // State to hold the firstname
-  const [lastname, setLastname] = useState("") // State to hold the lastname
-  const [pictureUrl, setPictureUrl] = useState("") // State to hold the pictureUrl
+  const [email, setEmail] = useState(''); // State to hold the email address
+  const [password, setPassword] = useState(''); // State to hold the password
+  const [firstname, setFirstname] = useState(''); // State to hold the firstname
+  const [lastname, setLastname] = useState(''); // State to hold the lastname
+  const [pictureUrl, setPictureUrl] = useState(''); // State to hold the pictureUrl
   const navigate = useNavigate(); // Navigate hook to redirect the user
   const dispatch = useDispatch(); // Dispatch hook to dispatch actions
   const user = useSelector((state) => state.user.user); // get user email from redux store to check if user already loggoed in or not
@@ -20,9 +20,9 @@ const Register = () => {
   useEffect(() => {
     // If there is user data in the redux store, redirect to the dashboard
     if (user && token) {
-      navigate("/");
+      navigate('/');
     }
-  }, [user, token]);
+  }, [user, token, navigate]);
 
   // handle submit function
   const handleSubmit = async (e) => {
@@ -30,7 +30,13 @@ const Register = () => {
 
     try {
       // Call the registerUser function from the API module to send the register request
-      const response = await registerUser({ first_name:firstname, last_name:lastname, email, password, pictureUrl });
+      const response = await registerUser({
+        first_name: firstname,
+        last_name: lastname,
+        email,
+        password,
+        pictureUrl,
+      });
       // console.log("Register response:", response);
       // Set the user in the redux store
       dispatch(setUser(response.email));
@@ -40,9 +46,9 @@ const Register = () => {
       dispatch(setPicture(response.picture));
       // Set the user id in the redux store
       dispatch(setUserId(response._id));
-      navigate("/");
+      navigate('/');
     } catch (error) {
-      console.log("Error registering in:", error);
+      console.log('Error registering in:', error);
     }
   };
 
@@ -53,17 +59,19 @@ const Register = () => {
         <p className="text-sm fw-bolder">Get things done.</p>
         <form className="py-3" onSubmit={handleSubmit}>
           {/* if user put picture url then dynamically show avatar component */}
-          {
-            pictureUrl && (
-              <Avatar url={pictureUrl} />
-            )
-          }
-          <div className="row mb-3" >
-          <div className="">
+          {pictureUrl && <Avatar url={pictureUrl} />}
+          <div className="row mb-3">
+            <div className="">
               <label htmlFor="inputPictureUrl" className="form-label">
                 Picture Url
               </label>
-              <input type="text" className="form-control" value={pictureUrl} onChange={(e) => setPictureUrl(e.target.value)} id="inputPictureUrl" />
+              <input
+                type="text"
+                className="form-control"
+                value={pictureUrl}
+                onChange={(e) => setPictureUrl(e.target.value)}
+                id="inputPictureUrl"
+              />
             </div>
           </div>
           <div className="row mb-3">
@@ -71,7 +79,13 @@ const Register = () => {
               <label htmlFor="inputFirstname" className="form-label">
                 Firstname
               </label>
-              <input type="text" className="form-control" value={firstname} onChange={(e)=> setFirstname(e.target.value)} id="inputFirstname" />
+              <input
+                type="text"
+                className="form-control"
+                value={firstname}
+                onChange={(e) => setFirstname(e.target.value)}
+                id="inputFirstname"
+              />
             </div>
             <div className="col-md-6">
               <label htmlFor="inputLastname" className="form-label">
@@ -117,7 +131,12 @@ const Register = () => {
           <button type="submit" className="btn btn-primary">
             Sign Up
           </button>
-          <p className="text-sm mt-2 mb-0" >Already have an account? <strong className="text-decoration-underline" onClick={() => navigate('/login')} >sign in</strong></p>
+          <p className="text-sm mt-2 mb-0">
+            Already have an account?{' '}
+            <strong className="text-decoration-underline" onClick={() => navigate('/login')}>
+              sign in
+            </strong>
+          </p>
         </form>
       </GlassMorphism>
     </Wrapper>

@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   mongo:
     image: mongo:6
@@ -33,8 +31,8 @@ services:
       # Helps CRA detect file changes on mounted volumes (Mac/WSL)
       - CHOKIDAR_USEPOLLING=true
       - HOST=0.0.0.0
-      # Optional: if you later read this in code, set local API base url
-      # - REACT_APP_API_BASE_URL=http://localhost:8080/api
+      # Point the client to the local API when running via Docker
+      - REACT_APP_API_BASE_URL=http://localhost:8080/api
     depends_on:
       - server
     volumes:

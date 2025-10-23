@@ -17,7 +17,7 @@ const Dashboard = () => {
     if (!user) {
       navigate('/login');
     }
-  }, [user]);
+  }, [user, navigate]);
 
   // Function to handle logout
   const handleLogout = async () => {
@@ -35,12 +35,12 @@ const Dashboard = () => {
 
   return (
     <div className="mt-5 py-3">
-      <Avatar url={url} user={user}/> {/* pass user email and picture url as props */}
-        <div className="menu mt-3" aria-labelledby="dropdownMenuButton">
-          <button className="btn btn-sm btn-danger" type="button" onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
+      <Avatar url={url} user={user} /> {/* pass user email and picture url as props */}
+      <div className="menu mt-3" aria-labelledby="dropdownMenuButton">
+        <button className="btn btn-sm btn-danger" type="button" onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
       <TodoList /> {/* display the TodoList component */}
     </div>
   );

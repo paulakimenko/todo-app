@@ -1,7 +1,9 @@
 # Todo App - Client
+
 This is the client-side code for the Todo App. It is a React application that allows users to manage their todo list. The client communicates with the server-side API to perform CRUD operations on todos.
 
 ## Features
+
 <ol>
     <li>User registration and login.</li>
     <li>todos CRUD.</li>
@@ -10,6 +12,7 @@ This is the client-side code for the Todo App. It is a React application that al
 </ol>
 
 ## Technologies
+
 <ol>
     <li>React</li>
     <li>Redux</li>
@@ -25,6 +28,7 @@ This is the client-side code for the Todo App. It is a React application that al
 ## Folder Structure
 
 The client code is organized into the following directories:
+
 <ol>
     <li><strong>src/Components: </strong>Contains reusable components used throughout the application Like Todo Component, Avatar Component etc.</li>
     <li><strong>src/Pages: </strong>Contains the pages of the application. Each page is a React route.</li>

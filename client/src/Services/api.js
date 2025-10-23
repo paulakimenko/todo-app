@@ -1,14 +1,12 @@
-import axios from "axios";
+import axios from 'axios';
 
-const API_BASE_URL = 'https://todo-app-server-eosin.vercel.app/api';
-// const API_BASE_URL = "http://localhost:8080/api";
+// Prefer environment override for local/dev; fall back to deployed API
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL || 'https://todo-app-server-eosin.vercel.app/api';
 // api request to register a new user
 export const registerUser = async (userData) => {
   try {
-    const { data } = await axios.post(
-      `${API_BASE_URL}/users/register`,
-      userData
-    );
+    const { data } = await axios.post(`${API_BASE_URL}/users/register`, userData);
     return data;
   } catch (error) {
     throw error;
@@ -35,7 +33,7 @@ export const getTodos = async (token, userId) => {
   try {
     const { data } = await axios.get(`${API_BASE_URL}/todos`, {
       headers: {
-        "x-access-token": token,
+        'x-access-token': token,
       },
       params: {
         userId: userId,
@@ -53,7 +51,7 @@ export const createTodo = async (todo, token, userId) => {
   try {
     const { data } = await axios.post(`${API_BASE_URL}/todos`, todo, {
       headers: {
-        "x-access-token": token,
+        'x-access-token': token,
       },
       params: {
         userId: userId,
@@ -74,15 +72,11 @@ export const updateTodo = async (todo, token) => {
   }
   // console.log(todo._id)
   try {
-    const { data } = await axios.put(
-      `${API_BASE_URL}/todos/${todo._id}`,
-      todo,
-      {
-        headers: {
-          "x-access-token": token,
-        },
-      }
-    );
+    const { data } = await axios.put(`${API_BASE_URL}/todos/${todo._id}`, todo, {
+      headers: {
+        'x-access-token': token,
+      },
+    });
     return data;
   } catch (error) {
     throw error;
@@ -94,7 +88,7 @@ export const deleteTodo = async (id, token) => {
   try {
     const { data } = await axios.delete(`${API_BASE_URL}/todos/${id}`, {
       headers: {
-        "x-access-token": token,
+        'x-access-token': token,
       },
     });
     return data;
@@ -106,17 +100,14 @@ export const deleteTodo = async (id, token) => {
 // api request to delete all todos of a user
 export const deleteAllTodos = async (token, userId) => {
   try {
-    const { data } = await axios.delete(
-      `${API_BASE_URL}/todos/delete/all`,
-      {
-        headers: {
-          "x-access-token": token,
-        },
-        params: {
-          userId: userId,
-        },
-      }
-    );
+    const { data } = await axios.delete(`${API_BASE_URL}/todos/delete/all`, {
+      headers: {
+        'x-access-token': token,
+      },
+      params: {
+        userId: userId,
+      },
+    });
     return data;
   } catch (error) {
     throw error;

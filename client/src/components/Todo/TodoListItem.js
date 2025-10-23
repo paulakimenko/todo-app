@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
-import styled from "styled-components";
-import { RxDragHandleDots2 } from "react-icons/rx";
+import React, { useState, useRef, useEffect } from 'react';
+import styled from 'styled-components';
+import { RxDragHandleDots2 } from 'react-icons/rx';
 
 const TodoListItem = ({
   message, // The todo item object
@@ -50,7 +50,7 @@ const TodoListItem = ({
 
   // Function to handle key escape to return to view mode
   const handleKeyEscape = (event) => {
-    if (event.key === "Escape") {
+    if (event.key === 'Escape') {
       setEditedMessage(message);
       toggleEditMode();
     }
@@ -78,18 +78,13 @@ const TodoListItem = ({
               id={`checkbox-${index}`}
             />
           </div>
-          <div>
-            {message.task}
-          </div>
+          <div>{message.task}</div>
         </div>
       )}
 
       <div>
         {editMode ? (
-          <button
-            className="btn btn-sm btn-success mx-2"
-            onClick={handleSaveChanges}
-          >
+          <button className="btn btn-sm btn-success mx-2" onClick={handleSaveChanges}>
             Save
           </button>
         ) : (
@@ -97,10 +92,7 @@ const TodoListItem = ({
             <RxDragHandleDots2 className="fs-4" onClick={toggleOptionsMenu} />
             {showOptionsMenu && (
               <OptionsMenuContent>
-                <button
-                  className="btn btn-sm btn-light"
-                  onClick={toggleEditMode}
-                >
+                <button className="btn btn-sm btn-light" onClick={toggleEditMode}>
                   Edit
                 </button>
                 <button className="btn btn-sm btn-light" onClick={deleteItem}>

@@ -1,0 +1,12 @@
+node_modules
+dist
+build
+.next
+coverage
+client/build
+server/logs
+*.lock
+Dockerfile
+**/*.min.js
+**/*.min.css
+**/*.bundle.js
